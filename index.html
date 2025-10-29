@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수원멀티짐 | 누구나 재미있게 배우는 MMA & 주짓수</title>
+    <!-- Tailwind CSS CDN 로드 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 기본 폰트 설정 (Inter를 기본으로 사용) */
+        :root {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        /* 모바일 메뉴 관련 CSS */
+        .mobile-menu-panel {
+            transition: transform 0.3s ease-out;
+            transform: translateX(100%);
+        }
+        .mobile-menu-overlay {
+            transition: opacity 0.3s ease-out;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .mobile-menu-open .mobile-menu-panel {
+            transform: translateX(0);
+        }
+        .mobile-menu-open .mobile-menu-overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Hero 섹션 배경 이미지와 애니메이션 초기 상태 */
+        #hero-section {
+            background-image: url('https://images.unsplash.com/photo-1594737625785-c74c1a0b15a4?auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        #hero-content {
+            /* React/Framer-motion initial state translation replication */
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out 0s, transform 0.8s ease-out 0s;
+        }
+        
+        /* Hero Content Load Animation Trigger */
+        .loaded #hero-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Utility for all content sections, replicating framer-motion section hover */
+        .section-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .section-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .benefit-card:hover, .schedule-card:hover, .pricing-card:hover {
+            transform: scale(1.03);
+        }
+        
+        /* Custom Button Component styles for hover/tap (using Tailwind hover utilities is preferred) */
+        .animated-button {
+            transition: transform 0.2s ease-out, background-color 0.2s ease-out;
+        }
+        .animated-button:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+
+<body class="font-sans text-gray-900 bg-white">
+    <!-- Header -->
+    <header class="w-full fixed top-0 left-0 bg-white/90 backdrop-blur-md border-b z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center px-4 py-3">
+            <h1 class="text-xl font-extrabold tracking-tight text-black-600">수원멀티짐</h1>
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="#programs" class="hover:text-red-600 transition hover:scale-110">프로그램</a>
+                <a href="#schedule" class="hover:text-red-600 transition hover:scale-110">시간표</a>
+                <a href="#pricing" class="hover:text-red-600 transition hover:scale-110">수강료</a>
+                <a href="#benefits" class="hover:text-red-600 transition hover:scale-110">혜택</a>
+                <a href="#contact" class="hover:text-red-600 transition hover:scale-110">문의</a>
+            </nav>
+            <!-- Mobile Menu Toggle Button -->
+            <div class="md:hidden">
+                <button id="menu-open-button">
+                    <!-- Menu Icon (Lucide: Menu) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-gray-800">
+                        <line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <!-- Desktop Free Trial Button -->
+            <div class="hidden md:block">
+                <a href="https://booking.naver.com/your-link" target="_blank" rel="noopener noreferrer" class="animated-button bg-red-600 hover:bg-red-700 text-white rounded-full px-4 py-2 text-sm hover:scale-105">
+                    무료 체험하기
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Container -->
+    <div id="mobile-menu-container">
+        <!-- Overlay (Hidden by default) -->
+        <div id="mobile-menu-overlay" class="mobile-menu-overlay fixed inset-0 bg-black/40 z-40" onclick="closeMenu()"></div>
+        
+        <!-- Menu Panel (Slides from right) -->
+        <div id="mobile-menu-panel" class="mobile-menu-panel fixed top-0 right-0 h-full w-64 bg-white z-50 p-6 flex flex-col">
+            <button class="self-end mb-6" id="menu-close-button">
+                <!-- X Icon (Lucide: X) -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-gray-800">
+                    <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+                </svg>
+            </button>
+            <nav class="flex flex-col space-y-4 text-lg font-medium">
+                <!-- Anchor links will close menu automatically via JS -->
+                <a href="#programs" class="hover:text-red-600 transition" onclick="closeMenu()">프로그램</a>
+                <a href="#schedule" class="hover:text-red-600 transition" onclick="closeMenu()">시간표</a>
+                <a href="#pricing" class="hover:text-red-600 transition" onclick="closeMenu()">수강료</a>
+                <a href="#benefits" class="hover:text-red-600 transition" onclick="closeMenu()">혜택</a>
+                <a href="#contact" class="hover:text-red-600 transition" onclick="closeMenu()">문의</a>
+            </nav>
+            <div class="mt-8">
+                <a href="https://booking.naver.com/your-link" target="_blank" rel="noopener noreferrer" class="animated-button bg-red-600 hover:bg-red-700 text-white rounded-full px-3 py-1.5 text-xs hover:scale-105">
+                    무료 체험하기
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="hero-section" class="relative h-[60vh] flex items-center justify-center">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70"></div>
+        <div id="hero-content" class="relative z-10 text-center text-white px-4">
+            <h2 class="text-3xl md:text-5xl font-extrabold mb-4 leading-tight">
+                누구나 재미있게 배우는 <br /> MMA & 주짓수
+            </h2>
+            <p class="mb-6 text-base md:text-lg opacity-90 transition-opacity duration-600 delay-400">
+                수원멀티짐에서 함께 강해지세요
+            </p>
+            <a href="https://booking.naver.com/your-link" target="_blank" rel="noopener noreferrer" class="animated-button bg-red-600 hover:bg-red-700 text-white rounded-full px-5 py-3 text-base hover:scale-105">
+                무료 체험 신청하기
+            </a>
+        </div>
+    </section>
+
+    <!-- Programs -->
+    <section id="programs" class="max-w-6xl mx-auto px-4 py-20">
+        <h3 class="text-3xl font-bold text-center mb-12">주요 프로그램</h3>
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- MMA 종합격투기 -->
+            <div class="section-card rounded-2xl shadow p-8 text-center border bg-white transition cursor-pointer">
+                <h4 class="text-xl font-semibold mb-3 text-red-600">MMA 종합격투기</h4>
+                <p class="text-gray-600 mb-6">타격과 그래플링 모두 잘할 수 있도록</p>
+            </div>
+            <!-- 브라질리언 주짓수 -->
+            <div class="section-card rounded-2xl shadow p-8 text-center border bg-white transition cursor-pointer">
+                <h4 class="text-xl font-semibold mb-3 text-red-600">브라질리언 주짓수</h4>
+                <p class="text-gray-600 mb-6">체계적으로 배우는 실전적인 주짓수</p>
+            </div>
+            <!-- 키즈 특공무술 & 주짓수 -->
+            <div class="section-card rounded-2xl shadow p-8 text-center border bg-white transition cursor-pointer">
+                <h4 class="text-xl font-semibold mb-3 text-red-600">키즈 특공무술 & 주짓수</h4>
+                <p class="text-gray-600 mb-6">즐겁게 강해지는 키즈반</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Schedule -->
+    <section id="schedule" class="max-w-6xl mx-auto px-4 py-20">
+        <h3 class="text-3xl font-bold text-center mb-12 flex justify-center items-center gap-2">
+            <!-- Clock Icon (Lucide: Clock) -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 text-red-600">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+            수업 시간표
+        </h3>
+        <div class="grid md:grid-cols-2 gap-6">
+            <!-- 성인반 오전 -->
+            <div class="schedule-card rounded-xl bg-green-50 p-6 shadow border transition cursor-pointer">
+                <h4 class="text-lg font-semibold text-red-600 mb-2">성인반 오전</h4>
+                <p class="text-sm text-gray-700">대상: 중학생 이상</p>
+                <p class="text-sm text-gray-700">시간: 10:30 ~ 11:30</p>
+                <p class="text-sm text-gray-600 mt-2">월·수·금 MMA</p>
+            </div>
+            <!-- 성인반 저녁1 -->
+            <div class="schedule-card rounded-xl bg-green-50 p-6 shadow border transition cursor-pointer">
+                <h4 class="text-lg font-semibold text-red-600 mb-2">성인반 저녁1</h4>
+                <p class="text-sm text-gray-700">대상: 중학생 이상</p>
+                <p class="text-sm text-gray-700">시간: 19:00 ~ 20:00</p>
+                <p class="text-sm text-gray-600 mt-2">월·수·금 MMA 화·목 주짓수</p>
+            </div>
+            <!-- 성인반 저녁2 -->
+            <div class="schedule-card rounded-xl bg-green-50 p-6 shadow border transition cursor-pointer">
+                <h4 class="text-lg font-semibold text-red-600 mb-2">성인반 저녁2</h4>
+                <p class="text-sm text-gray-700">대상: 중학생 이상</p>
+                <p class="text-sm text-gray-700">시간: 21:00 ~ 22:00</p>
+                <p class="text-sm text-gray-600 mt-2">월·수·금 주짓수 화/목 MMA</p>
+            </div>
+            <!-- 키즈반 -->
+            <div class="schedule-card rounded-xl bg-green-50 p-6 shadow border transition cursor-pointer">
+                <h4 class="text-lg font-semibold text-red-600 mb-2">키즈반</h4>
+                <p class="text-sm text-gray-700">대상: 초등학생</p>
+                <p class="text-sm text-gray-700">시간: 16:00 ~ 17:00 / 17:30 ~ 18:30</p>
+                <p class="text-sm text-gray-600 mt-2">특공무술 & 주짓수</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits -->
+    <section id="benefits" class="max-w-6xl mx-auto px-4 py-20">
+        <h3 class="text-3xl font-bold text-center mb-12 flex justify-center items-center gap-2">
+            <!-- Gift Icon (Lucide: Gift) -->
+            <svg xmlns="http://www.w3.org/2000/svg" 
+     width="24" 
+     height="24" 
+     viewBox="0 0 24 24" 
+     fill="none" 
+     stroke="#DC2626" 
+     stroke-width="2" 
+     stroke-linecap="round" 
+     stroke-linejoin="round" 
+     class="lucide lucide-gift">
+    <path d="M20 12v10H4V12"/>
+    <path d="M2 7h20v5H2z"/>
+    <path d="M12 22V7"/>
+    <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+    <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+</svg>
+            등록 혜택
+        </h3>
+        <div class="grid md:grid-cols-2 gap-6">
+            <!-- 24시간 체육관 운영 -->
+            <div class="benefit-card rounded-xl bg-red-50 p-6 shadow border transition cursor-pointer">
+                <h4 class="text-lg font-semibold text-red-600 mb-2">24시간 체육관 운영</h4>
+                <p class="text-sm text-gray-700">정규 수업시간 외 자율운동 가능</p>
+            </div>
+            <!-- 장기 등록 혜택 -->
+            <div class="benefit-card rounded-xl bg-red-50 p-6 shadow border transition cursor-pointer">
+                <h4 class="text-lg font-semibold text-red-600 mb-2">장기 등록 혜택</h4>
+                <p class="text-sm text-gray-700">3개월 이상 등록 시 도복, 핸드랩, 마우스피스 3종 증정</p>
+            </div>
+            <!-- 신규회원 특전 -->
+            <div class="benefit-card rounded-xl bg-red-50 p-6 shadow border transition cursor-pointer">
+                <h4 class="text-lg font-semibold text-red-600 mb-2">신규회원 특전</h4>
+                <p class="text-sm text-gray-700">1회 무료 체험, 신규 회원 관장 초기 집중 케어</p>
+            </div>
+            <!-- 키즈반 차량 운행 -->
+            <div class="benefit-card rounded-xl bg-red-50 p-6 shadow border transition cursor-pointer">
+                <h4 class="text-lg font-semibold text-red-600 mb-2">키즈반 차량 운행</h4>
+                <p class="text-sm text-gray-700">안전한 등하원 차량 운행 서비스 제공 (운행 지역 별도 문의)</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="max-w-6xl mx-auto px-4 py-20">
+        <h3 class="text-3xl font-bold text-center mb-12 flex justify-center items-center gap-2">
+            <!-- CreditCard Icon (Lucide: CreditCard) -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 text-red-600">
+                <rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/>
+            </svg>
+            수강료
+        </h3>
+        <div class="grid md:grid-cols-2 gap-6">
+            <!-- 성인반 주 3회 1타임 -->
+            <div class="pricing-card rounded-xl bg-gray-50 p-6 shadow border transition cursor-pointer">
+                <h4 class="text-lg font-semibold text-red-600 mb-2">성인반 주 3회 1타임</h4>
+                <p class="text-sm text-gray-900 font-bold mt-2">12만원</p>
+            </div>
+            <!-- 성인반 주 3회 올타임 -->
+            <div class="pricing-card rounded-xl bg-gray-50 p-6 shadow border transition cursor-pointer">
+                <h4 class="text-lg font-semibold text-red-600 mb-2">성인반 주 3회 올타임</h4>
+                <p class="text-sm text-gray-900 font-bold mt-2">14만원</p>
+            </div>
+            <!-- 성인반 주 5회 1타임 -->
+            <div class="pricing-card rounded-xl bg-gray-50 p-6 shadow border transition cursor-pointer">
+                <h4 class="text-lg font-semibold text-red-600 mb-2">성인반 주 5회 1타임</h4>
+                <p class="text-sm text-gray-900 font-bold mt-2">15만원</p>
+            </div>
+            <!-- 성인반 주 5회 올타임 -->
+            <div class="pricing-card rounded-xl bg-gray-50 p-6 shadow border transition cursor-pointer">
+                <h4 class="text-lg font-semibold text-red-600 mb-2">성인반 주 5회 올타임</h4>
+                <p class="text-sm text-gray-900 font-bold mt-2">17만원</p>
+            </div>
+            <!-- 키즈반 주 5회 -->
+            <div class="pricing-card rounded-xl bg-gray-50 p-6 shadow border transition cursor-pointer">
+                <h4 class="text-lg font-semibold text-red-600 mb-2">키즈반 주 5회</h4>
+                <p class="text-sm text-gray-900 font-bold mt-2">11만원</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-gray-900 text-gray-300 py-12 mt-12">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <p class="mb-2 font-bold text-white text-lg">수원멀티짐</p>
+            <p class="mb-2">경기 수원시 장안구 천천동 만석로19번길 11-7 306호 수원멀티짐 | 문의 010-2691-1257</p>
+            <p class="text-sm">© 2025 Team SMG. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript for Mobile Menu Functionality
+        const body = document.body;
+        const menuContainer = document.getElementById('mobile-menu-container');
+        const menuOpenBtn = document.getElementById('menu-open-button');
+        const menuCloseBtn = document.getElementById('menu-close-button');
+        const overlay = document.getElementById('mobile-menu-overlay');
+        const menuPanel = document.getElementById('mobile-menu-panel');
+
+        function openMenu() {
+            body.classList.add('mobile-menu-open', 'overflow-hidden'); // Add overflow-hidden to prevent body scroll
+        }
+
+        function closeMenu() {
+            body.classList.remove('mobile-menu-open', 'overflow-hidden');
+        }
+
+        // Event Listeners
+        if (menuOpenBtn) menuOpenBtn.addEventListener('click', openMenu);
+        if (menuCloseBtn) menuCloseBtn.addEventListener('click', closeMenu);
+        if (overlay) overlay.addEventListener('click', closeMenu);
+
+        // JavaScript for Hero Content Animation (Framer-motion replication)
+        window.addEventListener('load', () => {
+            // Add the 'loaded' class to trigger the CSS transition on #hero-content
+            setTimeout(() => {
+                body.classList.add('loaded');
+            }, 100); // Small delay to ensure CSS has rendered initial state
+        });
+        
+        // Custom Button Component whileTap replication
+        document.querySelectorAll('.animated-button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.style.transform = 'scale(0.98)';
+            });
+            button.addEventListener('mouseup', () => {
+                // Reverts to hover/default state, relying on CSS transition for smoothness
+                button.style.transform = ''; 
+            });
+            button.addEventListener('mouseleave', () => {
+                // Important for mouse drag off button
+                button.style.transform = '';
+            });
+            button.addEventListener('touchstart', (e) => {
+                e.currentTarget.style.transform = 'scale(0.98)';
+            }, { passive: true });
+            button.addEventListener('touchend', (e) => {
+                e.currentTarget.style.transform = '';
+            });
+            button.addEventListener('touchcancel', (e) => {
+                e.currentTarget.style.transform = '';
+            });
+        });
+
+    </script>
+</body>
+</html>
