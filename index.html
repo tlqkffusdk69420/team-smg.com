@@ -79,18 +79,24 @@
         .animated-button:active {
             transform: scale(0.98);
         }
+        
+        /* 헤더 고정 높이 보정을 위한 패딩 */
+        .header-spacer {
+            height: 6rem; /* h-24와 동일한 96px */
+        }
     </style>
 </head>
 
 <body class="font-sans text-gray-900 bg-white">
     <header class="w-full fixed top-0 left-0 bg-white/90 backdrop-blur-md border-b z-50">
-        <div class="max-w-6xl mx-auto flex justify-between items-center px-4 py-3">
+        <div class="max-w-6xl mx-auto flex justify-between items-center px-4 h-24">
             <a href="#" class="block">
                 <h1 class="text-xl font-extrabold tracking-tight">
-                    <img src="./smg-logo-transparent.png" alt="SMG 수원멀티짐 로고" class="h-24 w-auto" />
+                    <img src="./smg-logo-transparent.png" alt="SMG 수원멀티짐 로고" class="h-24 w-auto" style="filter: invert(1);" />
                     <span class="sr-only">수원멀티짐</span>
                 </h1>
             </a>
+            
             <nav class="hidden md:flex space-x-6 text-sm font-medium">
                 <a href="#programs" class="hover:text-red-600 transition hover:scale-110">프로그램</a>
                 <a href="#schedule" class="hover:text-red-600 transition hover:scale-110">시간표</a>
@@ -112,6 +118,8 @@
             </div>
         </div>
     </header>
+    
+    <div class="header-spacer"></div>
 
     <div id="mobile-menu-container">
         <div id="mobile-menu-overlay" class="mobile-menu-overlay fixed inset-0 bg-black/40 z-40" onclick="closeMenu()"></div>
@@ -349,10 +357,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
