@@ -84,11 +84,18 @@
         .header-spacer {
             height: 6rem; /* h-24와 동일한 96px */
         }
+      
+        #main-header {
+            transition: transform 0.3s ease-in-out;
+        }
+        .header-hidden {
+            transform: translateY(-100%);
+        }
     </style>
 </head>
 
 <body class="font-sans text-gray-900 bg-white">
-    <header class="w-full fixed top-0 left-0 bg-white/90 backdrop-blur-md border-b z-50">
+   <header id="main-header" class="w-full fixed top-0 left-0 bg-white/90 backdrop-blur-md border-b z-50">
         <div class="max-w-6xl mx-auto flex justify-between items-center px-4 h-24">
             <a href="#" class="block">
                 <h1 class="text-xl font-extrabold tracking-tight">
@@ -424,10 +431,25 @@
                 e.currentTarget.style.transform = '';
             });
         });
+        let lastScrollY = window.scrollY;
+        const header = document.getElementById('main-header');
+        const headerHeight = header.offsetHeight; 
 
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+
+            if (currentScrollY > lastScrollY && currentScrollY > headerHeight) {
+                header.classList.add('header-hidden');
+            } else if (currentScrollY < lastScrollY) {
+                header.classList.remove('header-hidden');
+            }
+            
+            lastScrollY = currentScrollY <= 0 ? 0 : currentScrollY;
+        }, { passive: true });
     </script>
 </body>
 </html>
+
 
 
 
