@@ -46,16 +46,6 @@
             background-size: cover;
             background-position: center;
         }
-        /* 비디오 배경을 추가하는 코드 */
-        #hero-section video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1; /* 텍스트 위에 비디오가 올라가지 않도록 */
-        }
         
         #hero-content {
             /* React/Framer-motion initial state translation replication */
@@ -162,26 +152,32 @@
             </div>
         </div>
     </div>
-<section id="hero-section" class="relative h-[60vh] flex items-center justify-center">
-        <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70"></div>
-        <!-- 추가된 비디오 배경 코드 -->
-        <video autoplay muted loop class="absolute inset-0 w-full h-full object-cover z-0">
-            <source src="your_video_url.mp4" type="video/mp4">
-            브라우저에서 비디오를 지원하지 않습니다.
-        </video>
+<section id="hero-section" class="relative h-[60vh] flex items-center justify-center overflow-hidden">
+    <video 
+        autoplay 
+        loop 
+        muted 
+        playsinline
+        class="absolute w-full h-full object-cover"
+    >
+        <source src="https://github.com/tlqkffusdk69420/team-smg.com/raw/refs/heads/main/_talkv_wypx7e6VYH_JqUStk3N44GyPe3gJNmqO0_talkv_high.mp4" type="video/mp4">
+    </video>
     
-        <div id="hero-content" class="relative z-10 text-center text-white px-4">
-            <h2 class="text-3xl md:text-5xl font-extrabold mb-4 leading-tight">
-                누구나 재미있게 배우는 <br /> MMA & 주짓수
-            </h2>
-            <p class="mb-6 text-base md:text-lg opacity-90 transition-opacity duration-600 delay-400">
-                수원멀티짐에서 함께 강해지세요
-            </p>
-            <a href="https://booking.naver.com/your-link" target="_blank" rel="noopener noreferrer" class="animated-button bg-sky-500 hover:bg-sky-600 text-white rounded-full px-5 py-3 text-base hover:scale-105">
-                무료 체험 신청하기
-            </a>
-        </div>
-    </section>
+    <!-- 동영상 투명도 변경 부분. 0이 가장 밝음. 100이 가장 어두움. -->
+    <div class="absolute inset-0 bg-black/70"></div>
+
+    <div id="hero-content" class="relative z-10 text-center text-white px-4">
+        <h2 class="text-3xl md:text-5xl font-extrabold mb-4 leading-tight">
+            누구나 재미있게 배우는 <br /> MMA & 주짓수
+        </h2>
+        <p class="mb-6 text-base md:text-lg opacity-90 transition-opacity duration-600 delay-400">
+            수원멀티짐에서 함께 강해지세요
+        </p>
+        <a href="https://booking.naver.com/your-link" target="_blank" rel="noopener noreferrer" class="animated-button bg-sky-500 hover:bg-sky-600 text-white rounded-full px-5 py-3 text-base hover:scale-105">
+            무료 체험 신청하기
+        </a>
+    </div>
+</section>
    <section id="programs" class="max-w-6xl mx-auto px-4 py-20">
     <h3 class="text-3xl font-bold text-center mb-12">주요 프로그램</h3>
     
@@ -466,24 +462,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
