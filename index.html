@@ -1,170 +1,189 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>수원멀티짐 | 누구나 재미있게 배우는 MMA & 주짓수</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
-    
-    <style>
-     /* 16~19번째 줄 (이것으로 교체하세요) */
-        :root {
-            font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-            scroll-behavior: smooth;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수원멀티짐 | 누구나 재미있게 배우는 MMA & 주짓수</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    
+    <style>
+      /* 16~19번째 줄 (이것으로 교체하세요) */
+        :root {
+            font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+            scroll-behavior: smooth;
+        }
 
-        /* 모바일 메뉴 관련 CSS */
-        .mobile-menu-panel {
-            transition: transform 0.3s ease-out;
-            transform: translateX(100%);
-        }
-        .mobile-menu-overlay {
-            transition: opacity 0.3s ease-out;
-            opacity: 0;
-            pointer-events: none;
-        }
-        
-        /* 모바일 메뉴 오픈 시 body의 overflow: hidden 적용 및 스크롤바 공간 보정 */
-        .mobile-menu-open {
-            overflow: hidden;
-            /* 데스크톱에서 스크롤바가 사라지는 공간을 패딩으로 보정 (일반적인 윈도우 스크롤바 너비인 15px~17px 사용) */
-            padding-right: 17px; 
-        }
+        /* 모바일 메뉴 관련 CSS */
+        .mobile-menu-panel {
+            transition: transform 0.3s ease-out;
+            transform: translateX(100%);
+        }
+        .mobile-menu-overlay {
+            transition: opacity 0.3s ease-out;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* 모바일 메뉴 오픈 시 body의 overflow: hidden 적용 및 스크롤바 공간 보정 */
+        .mobile-menu-open {
+            overflow: hidden;
+            /* 데스크톱에서 스크롤바가 사라지는 공간을 패딩으로 보정 (일반적인 윈도우 스크롤바 너비인 15px~17px 사용) */
+            padding-right: 17px; 
+        }
 
-        .mobile-menu-open .mobile-menu-panel {
-            transform: translateX(0);
-        }
-        .mobile-menu-open .mobile-menu-overlay {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .mobile-menu-open .mobile-menu-panel {
+            transform: translateX(0);
+        }
+        .mobile-menu-open .mobile-menu-overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
 
-        /* Hero 섹션 배경 이미지와 애니메이션 초기 상태 */
-        #hero-section {
-            background-image: url('https://images.unsplash.com/photo-1594737625785-c74c1a0b15a4?auto=format&fit=crop&w=1600&q=80');
-            background-size: cover;
-            background-position: center;
-        }
-        #hero-content {
-            /* React/Framer-motion initial state translation replication */
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s ease-out 0s, transform 0.8s ease-out 0s;
-        }
-        
-        /* Hero Content Load Animation Trigger */
-        .loaded #hero-content {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        /* Hero 섹션 배경 이미지와 애니메이션 초기 상태 */
+        #hero-section {
+            /* ★★★ 이 부분은 비디오 배경으로 대체되어 주석 처리(삭제)합니다. ★★★ */
+            /*
+             background-image: url('https://images.unsplash.com/photo-1594737625785-c74c1a0b15a4?auto=format&fit=crop&w=1600&q=80');
+             background-size: cover;
+             background-position: center;
+            */
+        }
+        #hero-content {
+            /* React/Framer-motion initial state translation replication */
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out 0s, transform 0.8s ease-out 0s;
+        }
+        
+        /* Hero Content Load Animation Trigger */
+        .loaded #hero-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-        /* Utility for all content sections, replicating framer-motion section hover */
-        .section-card {
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-        }
-        .section-card:hover {
-            transform: translateY(-6px) scale(1.02);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        
-        .benefit-card:hover, .schedule-card:hover, .pricing-card:hover {
-            transform: scale(1.03);
-        }
-        
-        /* Custom Button Component styles for hover/tap (using Tailwind hover utilities is preferred) */
-        .animated-button {
-            transition: transform 0.2s ease-out, background-color 0.2s ease-out;
-        }
-        .animated-button:active {
-            transform: scale(0.98);
-        }
-        
-        /* 헤더 고정 높이 보정을 위한 패딩 */
-        .header-spacer {
-            height: 6rem; /* h-24와 동일한 96px */
-        }
-      
-        #main-header {
-            transition: transform 0.3s ease-in-out;
-        }
-        .header-hidden {
-            transform: translateY(-100%);
-        }
-    </style>
+        /* Utility for all content sections, replicating framer-motion section hover */
+        .section-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .section-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .benefit-card:hover, .schedule-card:hover, .pricing-card:hover {
+            transform: scale(1.03);
+        }
+        
+        /* Custom Button Component styles for hover/tap (using Tailwind hover utilities is preferred) */
+        .animated-button {
+            transition: transform 0.2s ease-out, background-color 0.2s ease-out;
+        }
+        .animated-button:active {
+            transform: scale(0.98);
+        }
+        
+        /* 헤더 고정 높이 보정을 위한 패딩 */
+        .header-spacer {
+            height: 6rem; /* h-24와 동일한 96px */
+        }
+       
+        #main-header {
+            transition: transform 0.3s ease-in-out;
+        }
+        .header-hidden {
+            transform: translateY(-100%);
+        }
+    </style>
 </head>
 
 <body class="font-sans text-gray-900 bg-white">
-   <header id="main-header" class="w-full fixed top-0 left-0 bg-white/90 backdrop-blur-md border-b z-50">
-        <div class="max-w-6xl mx-auto flex justify-between items-center px-4 h-24">
-            <a href="#" class="block">
-                <h1 class="text-xl font-extrabold tracking-tight">
-                    <img src="./smg-logo-transparent.png" alt="SMG 수원멀티짐 로고" class="h-32 w-auto" />
-                    <span class="sr-only">수원멀티짐</span>
-                </h1>
-            </a>
-            
-            <nav class="hidden md:flex space-x-6 text-sm font-medium">
-                <a href="#programs" class="hover:text-sky-600 transition hover:scale-110">프로그램</a>
-                <a href="#schedule" class="hover:text-sky-600 transition hover:scale-110">시간표</a>
-                <a href="#pricing" class="hover:text-sky-600 transition hover:scale-110">수강료</a>
-                <a href="#benefits" class="hover:text-sky-600 transition hover:scale-110">혜택</a>
-                <a href="#contact" class="hover:text-sky-600 transition hover:scale-110">문의</a>
-            </nav>
-            <div class="md:hidden">
-                <button id="menu-open-button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-gray-800">
-                        <line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>
-                    </svg>
-                </button>
-            </div>
-            <div class="hidden md:block">
-                <a href="https://booking.naver.com/your-link" target="_blank" rel="noopener noreferrer" class="animated-button bg-sky-600 hover:bg-sky-700 text-white rounded-full px-4 py-2 text-sm hover:scale-105">
-                    무료 체험하기
-                </a>
-            </div>
-        </div>
-    </header>
-    
-    <div class="header-spacer"></div>
+   <header id="main-header" class="w-full fixed top-0 left-0 bg-white/90 backdrop-blur-md border-b z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center px-4 h-24">
+            <a href="#" class="block">
+                <h1 class="text-xl font-extrabold tracking-tight">
+                    <img src="./smg-logo-transparent.png" alt="SMG 수원멀티짐 로고" class="h-32 w-auto" />
+                    <span class="sr-only">수원멀티짐</span>
+                </h1>
+            </a>
+            
+            <nav class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="#programs" class="hover:text-sky-600 transition hover:scale-110">프로그램</a>
+                <a href="#schedule" class="hover:text-sky-600 transition hover:scale-110">시간표</a>
+                <a href="#pricing" class="hover:text-sky-600 transition hover:scale-110">수강료</a>
+                <a href="#benefits" class="hover:text-sky-600 transition hover:scale-110">혜택</a>
+                <a href="#contact" class="hover:text-sky-600 transition hover:scale-110">문의</a>
+            </nav>
+            <div class="md:hidden">
+                <button id="menu-open-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-gray-800">
+                        <line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="hidden md:block">
+                <a href="https://booking.naver.com/your-link" target="_blank" rel="noopener noreferrer" class="animated-button bg-sky-600 hover:bg-sky-700 text-white rounded-full px-4 py-2 text-sm hover:scale-105">
+                    무료 체험하기
+                </a>
+            </div>
+        </div>
+   </header>
+    
+   <div class="header-spacer"></div>
 
-    <div id="mobile-menu-container">
-        <div id="mobile-menu-overlay" class="mobile-menu-overlay fixed inset-0 bg-black/40 z-40" onclick="closeMenu()"></div>
-        
-        <div id="mobile-menu-panel" class="mobile-menu-panel fixed top-0 right-0 h-full w-64 bg-white z-50 p-6 flex flex-col">
-            <button class="self-end mb-6" id="menu-close-button">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-gray-800">
-                    <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
-                </svg>
-            </button>
-            <nav class="flex flex-col space-y-4 text-lg font-medium">
-                <a href="#programs" class="hover:text-sky-600 transition" onclick="closeMenu()">프로그램</a>
-                <a href="#schedule" class="hover:text-sky-600 transition" onclick="closeMenu()">시간표</a>
-                <a href="#pricing" class="hover:text-sky-600 transition" onclick="closeMenu()">수강료</a>
-                <a href="#benefits" class="hover:text-sky-600 transition" onclick="closeMenu()">혜택</a>
-                <a href="#contact" class="hover:text-sky-600 transition" onclick="closeMenu()">문의</a>
-            </nav>
-            <div class="mt-8">
-                <a href="https://booking.naver.com/your-link" target="_blank" rel="noopener noreferrer" class="animated-button bg-sky-500 hover:bg-sky-600 text-white rounded-full px-3 py-1.5 text-xs hover:scale-105">
-                    무료 체험하기
-                </a>
-            </div>
-        </div>
-    </div>
-<section id="hero-section" class="relative h-[60vh] flex items-center justify-center">
-        <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70"></div>
-        <div id="hero-content" class="relative z-10 text-center text-white px-4">
-            <h2 class="text-3xl md:text-5xl font-extrabold mb-4 leading-tight">
-                누구나 재미있게 배우는 <br /> MMA & 주짓수
-            </h2>
-            <p class="mb-6 text-base md:text-lg opacity-90 transition-opacity duration-600 delay-400">
-                수원멀티짐에서 함께 강해지세요
-            </p>
-            <a href="https://booking.naver.com/your-link" target="_blank" rel="noopener noreferrer" class="animated-button bg-sky-500 hover:bg-sky-600 text-white rounded-full px-5 py-3 text-base hover:scale-105">
-                무료 체험 신청하기
-            </a>
-        </div>
-    </section>
+   <div id="mobile-menu-container">
+        <div id="mobile-menu-overlay" class="mobile-menu-overlay fixed inset-0 bg-black/40 z-40" onclick="closeMenu()"></div>
+        
+        <div id="mobile-menu-panel" class="mobile-menu-panel fixed top-0 right-0 h-full w-64 bg-white z-50 p-6 flex flex-col">
+            <button class="self-end mb-6" id="menu-close-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-gray-800">
+                    <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+                </svg>
+            </button>
+            <nav class="flex flex-col space-y-4 text-lg font-medium">
+                <a href="#programs" class="hover:text-sky-600 transition" onclick="closeMenu()">프로그램</a>
+                <a href="#schedule" class="hover:text-sky-600 transition" onclick="closeMenu()">시간표</a>
+                <a href="#pricing" class="hover:text-sky-600 transition" onclick="closeMenu()">수강료</a>
+                <a href="#benefits" class="hover:text-sky-600 transition" onclick="closeMenu()">혜택</a>
+                <a href="#contact" class="hover:text-sky-600 transition" onclick="closeMenu()">문의</a>
+            </nav>
+            <div class="mt-8">
+                <a href="https://booking.naver.com/your-link" target="_blank" rel="noopener noreferrer" class="animated-button bg-sky-500 hover:bg-sky-600 text-white rounded-full px-3 py-1.5 text-xs hover:scale-105">
+                    무료 체험하기
+                </a>
+            </div>
+        </div>
+   </div>
+
+ 
+<section id="hero-section" class="relative h-[60vh] flex items-center justify-center overflow-hidden">
+        
+               <video 
+            src="path/to/your-gym-video.mp4"            autoplay 
+            loop 
+            muted 
+            playsinline
+            class="absolute top-0 left-0 w-full h-full object-cover z-[-1]"
+            id="hero-video"
+        >
+                             Your browser does not support the video tag.
+        </video>
+
+               <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70 z-0"></div>
+        
+               <div id="hero-content" class="relative z-10 text-center text-white px-4">
+            <h2 class="text-3xl md:text-5xl font-extrabold mb-4 leading-tight">
+                누구나 재미있게 배우는 <br /> MMA & 주짓수
+            </h2>
+            <p class="mb-6 text-base md:text-lg opacity-90 transition-opacity duration-600 delay-400">
+                수원멀티짐에서 함께 강해지세요
+            </p>
+            <a href="https://booking.naver.com/your-link" target="_blank" rel="noopener noreferrer" class="animated-button bg-sky-500 hover:bg-sky-600 text-white rounded-full px-5 py-3 text-base hover:scale-105">
+                무료 체험 신청하기
+            </a>
+        </div>
+</section>
+
    <section id="programs" class="max-w-6xl mx-auto px-4 py-20">
     <h3 class="text-3xl font-bold text-center mb-12">주요 프로그램</h3>
     
@@ -370,7 +389,6 @@
            </p>
        </div>
    </section>
-    </section>
 
     <footer id="contact" class="bg-gray-900 text-gray-300 py-12 mt-12">
         <div class="max-w-6xl mx-auto px-4 text-center">
@@ -449,6 +467,7 @@
     </script>
 </body>
 </html>
+
 
 
 
